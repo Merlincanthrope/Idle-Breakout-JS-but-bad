@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <title id="gameTitle">Idle Breakout but Bad</title>
+        <link rel="stylesheet" href="assets/game/bad-breakout.css">
+    </head>
+
+    <body id="pageBody">
+
+        <input type="button" id="addBasicBall" onclick="create.basicBall(ballData)" value="basic ball">
+        <input type="button" id="addBasicBallSpd" onclick="upgrade.speed.basicBall()" value="basic speed up">
+        <button id="showUpgrades" onclick="showUpgrades()">show upgrades</button>
+        <br>
+        <div id="upgradeOverlay"></div>
+        <canvas id="gameCanvas" width="910px" height="540px"></canvas>
+
+        <!--  data files (load first)  -->
+        <script src="assets/data/utils.js"></script>
+        <script src="assets/data/level-data.js"></script>
+
+        <!--  base class files (load before extended)  -->
+        <script src="assets/classes/base/Ball.js"></script>
+        <script src="assets/classes/base/Brick.js"></script>
+
+        <!--  extended class files (load after base)  -->
+        <script src="assets/classes/extended/Basic-Ball.js"></script>
+        <script src="assets/classes/extended/Level.js"></script>
+
+        <!--  main logic file (load last)  -->
+        <script src="assets/game/bad-breakout.js"></script>
+
+        <script>window.onload = animate()</script>
+
+    </body>
+</html>
