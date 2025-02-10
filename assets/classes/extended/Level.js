@@ -7,6 +7,7 @@ class Level extends Brick {
         for (var i = 0; i < this.bricks.length; i++)
             this.bricks[i] = [];
         this.levelFormats = levels;
+        this.bricksAlive = 0;
     }
 
     /**draw the level according to the id's corresponding level format 
@@ -22,6 +23,7 @@ class Level extends Brick {
             for (var j = 0; j < format[i].length; j++) {
                 if (format[i][j] == 4) {
                     this.bricks[i][j] = new Brick({ level: this.lvl, coord: {x: i * BRICK_WIDTH, y: j * BRICK_HEIGHT}, hp: 1 });
+                    this.bricksAlive++;
                 } else if (format[i][j] == 0) {
                     this.bricks[i][j] = null;
                 }
@@ -39,6 +41,12 @@ class Level extends Brick {
                 }
             }
         }
+    }
+
+    levelCompleteStatus() {
+        var status = this.bricksAlive <= 0;
+        if (status) console.log("ALERT: Level was completed");
+        return status;
     }
 }
 

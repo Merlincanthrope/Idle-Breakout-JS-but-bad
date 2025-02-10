@@ -8,13 +8,43 @@
     </head>
 
     <body id="pageBody">
+        
+        <canvas id="gameCanvas" width="910px" height="540px"></canvas><br>
+        
+        <span id="money">0$</span><br>
 
-        <input type="button" id="addBasicBall" onclick="create.basicBall(ballData)" value="basic ball">
-        <input type="button" id="addBasicBallSpd" onclick="upgrade.speed.basicBall()" value="basic speed up">
-        <button id="showUpgrades" onclick="showUpgrades()">show upgrades</button>
-        <br>
-        <div id="upgradeOverlay"></div>
-        <canvas id="gameCanvas" width="910px" height="540px"></canvas>
+        <button id="showUpgBtn" class="collapsible">show upgrades</button>
+        <div class="upgrades">
+            <input type="button" id="addBasicBall" onclick="create.basicBall(ballData)" value="basic ball">
+            <input type="button" id="addBasicBallSpd" onclick="upgrade.speed.basicBall()" value="basic speed up">
+        </div>
+
+
+        <button id="showChtBtn" class="collapsible">show cheats</button>
+        <div class="upgrades">
+            <input type="button" id="increaseMoney" onclick="cheats.increaseMoney(1000)" value="+1000$">
+            <input type="button" id="freeUpgrades" onclick="cheats.freeUpgrades()" value="Free Upgrades">
+            <span id="cheatSettings">False</span>
+        </div>
+
+        
+        <script> // Collapsible code for showUpgBtn
+
+            var collapsible = document.getElementsByClassName("collapsible");
+
+            for (var i = 0; i < collapsible.length; i++) {
+                collapsible[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    if (content.style.display === "block")
+                        content.style.display = "none";
+                    else 
+                        content.style.display = "block";
+                });
+            }
+
+        </script>
+
 
         <!--  data files (load first)  -->
         <script src="assets/data/utils.js"></script>
@@ -32,6 +62,7 @@
         <script src="assets/game/bad-breakout.js"></script>
 
         <script>window.onload = animate()</script>
+
 
     </body>
 </html>

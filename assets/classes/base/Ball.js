@@ -1,10 +1,10 @@
 class Ball {
-    constructor({velocity}) {
+    constructor() {
         this.coord = {
-            x: 415,
-            y: 270,
+            x: STARTING_X,
+            y: STARTING_Y,
         };
-        this.velocity = velocity;
+        this.velocity = {x: 1, y: 1};
     }
 }
 

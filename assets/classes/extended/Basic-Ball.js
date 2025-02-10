@@ -1,13 +1,24 @@
 class BasicBall extends Ball {
-    constructor({speed, velocity, coord}) {
+    constructor({ 
+        speed = 0.1, velocity, coord = {x: STARTING_X, y: STARTING_Y}, 
+        maxSpd = MAX_SPEED, trueMaxSpd = TRUE_MAX_SPEED
+     }) {
         super({velocity, coord});
+
+        // Basic Ball Color Scheme
         this.fillStyle = "yellow";
         this.strokeStyle = "black";
+
         this.radius = 10;
-        this.speed = speed;
-        this.velocity = velocity;
-        this.velocity.x *= this.speed;
+        this.speedDecrement = 0.05;
+        this.speed = 1 + (speed / (10 - this.speedDecrement)); // Set speed
+        this.velocity = velocity; // Set total velocity
+        this.baseVelocity = velocity; // Set base velocity
+        this.velocity.x *= this.speed; // Apply speed multiplier
         this.velocity.y *= this.speed;
+
+        this.MAX_SPEED = maxSpd;
+        this.TRUE_MAX_SPEED = trueMaxSpd;
     }
     
     /** Draw an ent object basic ball at its current coordinates */
@@ -49,6 +60,8 @@ class BasicBall extends Ball {
                 var brick = level.bricks[i][j];
                 if (brick != null && brick.hp > 0) {
 
+                    if (!brick.alive) return;
+
                     // Check horizontal collision
                     if (
                         this.coord.x + this.radius + this.velocity.x   >=   brick.coord.x && // left of brick
@@ -62,22 +75,24 @@ class BasicBall extends Ball {
                         if (this.velocity.x > 0) {
                             offset -= this.radius;
                             this.coord.x = brick.coord.x + offset - 0.01;
-                            console.log("INFO: Ball hit the left side of a brick");
-                            console.log("INFO: New ball coords=" + this.coord.y + "\n"
-                                + "Brick coords=" + (brick.coord.y + BRICK_HEIGHT));
+                            // console.log("INFO: Ball hit the left side of a brick");
+                            // console.log("INFO: New ball coords=" + this.coord.y + "\n"
+                                // + "Brick coords=" + (brick.coord.y + BRICK_HEIGHT));
 
                         // Collision between the BasicBall's left side and the right side of brick
                         } else {
                             offset += this.radius;
                             this.coord.x = brick.coord.x + BRICK_WIDTH + offset + 0.01;
-                            console.log("INFO: Ball hit the right side of a brick");
-                            console.log("INFO: New ball coords=" + this.coord.y + "\n"
-                                + "Brick coords=" + (brick.coord.y + BRICK_HEIGHT));
+                            // console.log("INFO: Ball hit the right side of a brick");
+                            // console.log("INFO: New ball coords=" + this.coord.y + "\n"
+                                // + "Brick coords=" + (brick.coord.y + BRICK_HEIGHT));
                         }
 
                         this.velocity.x = -this.velocity.x;
-                        console.log("INFO: New velocity is (" + this.velocity.x + ", " + this.velocity.y + ")");
+                        // console.log("INFO: New velocity is (" + this.velocity.x + ", " + this.velocity.y + ")");
                         brick.hp--;
+                        if (brick.hp == 0) 
+                            money += 4;
                     }
 
                     // Check vertical collision
@@ -93,22 +108,23 @@ class BasicBall extends Ball {
                         if (this.velocity.y > 0) {
                             offset -= this.radius;
                             this.coord.y = brick.coord.y + offset - 0.01;
-                            console.log("INFO: Ball hit the top of a brick");
-                            console.log("INFO: New ball coords=" + this.coord.y + "\n"
-                                + "Brick coords=" + (brick.coord.y + BRICK_HEIGHT));
+                            // console.log("INFO: Ball hit the top of a brick");
+                            // console.log("INFO: New ball coords=" + this.coord.y + "\n"
+                            //     + "Brick coords=" + (brick.coord.y + BRICK_HEIGHT));
 
                         // Collision between the BasicBall's top and the bottom of brick
                         } else {
                             offset += this.radius;
                             this.coord.y = brick.coord.y + BRICK_HEIGHT + offset + 0.01;
-                            console.log("INFO: Ball hit the bottom of a brick");
-                            console.log("INFO: New ball coords=" + this.coord.y + "\n"
-                                + "Brick coords=" + (brick.coord.y + BRICK_HEIGHT));
+                            // console.log("INFO: Ball hit the bottom of a brick");
+                            // console.log("INFO: New ball coords=" + this.coord.y + "\n"
+                            //     + "Brick coords=" + (brick.coord.y + BRICK_HEIGHT));
                         }
 
                         this.velocity.y = -this.velocity.y;
-                        console.log("INFO: New velocity is (" + this.velocity.x + ", " + this.velocity.y + ")");
+                        // console.log("INFO: New velocity is (" + this.velocity.x + ", " + this.velocity.y + ")");
                         brick.hp--;
+                        if (brick.hp == 0) money += 4;
                     }
                 }
             }
@@ -117,7 +133,19 @@ class BasicBall extends Ball {
 
     /** Update the stats of the ball (apply speed multi to velocity, among other things) */
     updateStats() {
-        this.velocity.x *= this.speed;
-        this.velocity.y *= this.speed;
+        this.velocity.x = this.baseVelocity.x * ballList.basic[0].speed;
+        this.velocity.y = this.baseVelocity.y * ballList.basic[0].speed;
+
+        if (this.velocity.x >= this.MAX_SPEED)
+            { this.velocity.x = this.MAX_SPEED; }
+        else if (this.velocity.x <= -this.MAX_SPEED)
+            { this.velocity.x = -this.MAX_SPEED; }
+
+        if (this.velocity.y >= this.MAX_SPEED)
+            { this.velocity.y = this.MAX_SPEED; }
+        else if (this.velocity.y <= -this.MAX_SPEED)
+            { this.velocity.y = -this.MAX_SPEED; }
+
+        console.log("INFO: speed=" + this.speed + ", new velocity=(" + this.velocity.x + ", " + this.velocity.y + ")");
     }
 }

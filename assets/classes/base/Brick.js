@@ -9,11 +9,15 @@ class Brick {
         this.strokeStyle = "black";
         this.width = 70;
         this.height = 30;
+        this.alive = true;
     }
 
     /**Draw the brick onto the canvas*/
     drawBrick() {
-        if (this.hp <= 0) return;
+        if (this.hp <= 0) {
+            this.alive = false;
+            return;
+        };
         ctx.save();
 
         ctx.fillStyle = this.fillStyle;
